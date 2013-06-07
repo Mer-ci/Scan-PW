@@ -76,4 +76,13 @@ Les informations sont envoyées en JSON, les trames auront donc la forme suivant
 
 
 Les informations sont envoyées en JSON, les trames auront donc la forme suivante (nous nous plaçons du coter mobile): -	envoi des logins{	type : ‘r’,	key : ‘the key’,	URL : ‘www.mon-url.com’,	login : ‘mon login’,	pwd : ‘mon pwd’}-	envoi commande cancel{	type : ‘c’,	key : ‘my key’}
-	
+
+
+
+	VI Améliorations possibles
+
+
+- utilisation des web sockets pour la communication
+- utilisation du cryptage par courbes elliptiques qui aura comme principale avantage de réduire la taille des QR Code et de facilité le scan depuis le mobile.
+- créer une connexion direct entre le mobile et l'extension pour éviter d'avoir à utiliser un serveur
+- améliorer l'interface de l'extension
