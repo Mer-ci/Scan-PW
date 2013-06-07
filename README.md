@@ -11,9 +11,13 @@ L'application mobile est le coeur de scan pw, elle va stockée tous vos mots de 
 L'extension chrome va permettre de renseigner les identifiants quand ils seront demander, pour cela l'extension va générer un QR Code que l'application mobile devra scanner puis elle enverra les identifiants correspondants à l'extension pour qu'elle puisse les rentrés dans les champs souhaités.
 
 	II.1 menus de l’extension
-Ces options sont :-	L’affichage du QR Code avec redimensionnement, possibilité de désactiver l’affichage automatique de la popup, ainsi qu’un bouton d’aide ouvrant un nouvel onglet avec une page web contenant l’aide plus les infos de licence, etc. ![extension menu](/img/menuExtension.png "extension menu")
+Ces options sont :-	L’affichage du QR Code avec redimensionnement, possibilité de désactiver l’affichage automatique de la popup, ainsi qu’un bouton d’aide ouvrant un nouvel onglet avec une page web contenant l’aide plus les infos de licence, etc.
+
+![extension menu](/img/menuExtension.png "extension menu")
+
 
 	II.2 Reconnaissance de la nécessité d’identifiants et génération de QRCode
+
 
 L'extension parcoure chaque page et vérifie si elle nécessite des identifiants, si c'est le cas on générer un QRCode. La partie détection se trouve dans le content script pour avoir accès à la page web visitée. La détection automatique peut-être désactivée, si on la désactive on peut toujours afficher le QR Code en passant par le popup de l'extension. À noter que si les champs ne sont pas automatiquement détectés les identifiants peuvent être insérés grâce à un menu contextuel. Le QRCode peut être redimensionné pour faciliter le scan du QRCode, il contient : l'URL de la page et la clef publique.	II.3 Fonctionnement interne 
 
