@@ -27,21 +27,10 @@ chrome.extension.onMessage.addListener(
     function (request, sender, sendResponse) {
         //si le content.js toruve un login -> demande de mot de passe au serveur
         if (request.dom == "getLogin") {
-            // if (request.tabId) {
-            //     askMDP(request.tabId);
-            // }else{
-            //     if (window.localStorage.getItem("autoDetect")=="true") {
-            //         sendResponse({genQR: "true"});
-            //         askMDP(sender.tab.id);
-            //     }
-            // }
             if (window.localStorage.getItem("autoDetect")=="true") {
                 sendResponse({genQR: "true"});
             }
             askMDP(sender.tab.id);
-            //alert(window.localStorage.getItem("size"));
-            //window.blur();
-            //window.localStorage.setItem("size","310"); 
         }else if (request.dom == "getPubKey") {
             sendResponse({pubKey: window.localStorage.getItem("pubKey")});
         }else if (request.dom == "getKey") {
@@ -83,16 +72,12 @@ chrome.extension.onMessage.addListener(
 
 function insertUser (info, tab) {
     chrome.tabs.sendMessage(tab.id, {dom: "insertUserLogin", login: window.localStorage.getItem('login')}, function(response) {
-
     });
-
 }
 
 function insertPwd (info, tab) {
     chrome.tabs.sendMessage(tab.id, {dom: "insertUserPwd", pwd: window.localStorage.getItem('pwd')}, function(response) {
-
     });
-
 }
 
 chrome.contextMenus.create({

@@ -1,6 +1,6 @@
 var rsa = new RSAKey();
 
-var e = "3"; // Public exponent 65537
+var e = "3"; // Public exponent 65537 plus secure
 var lengthRSA = 1024;
 var gen = true;
 

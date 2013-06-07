@@ -18,7 +18,7 @@
 	"permissions": [
 	    "tabs",
 	    "contextMenus",
-	    "http://web.scan.pw:8080/"
+	    "http://127.0.0.1:8080/"
 	],
 	"background": {
 		"page" : "background.html"

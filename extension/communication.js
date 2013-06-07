@@ -1,7 +1,4 @@
-// var ip = "extension.scan.pw"; //localhost 127.0.0.1
-// var ip = "127.0.0.1";
-var ip = "web.scan.pw";
-// var ip = "10.11.1.104"
+var ip = "127.0.0.1"; //ne pas oublier de modifié le manifest
 var port = "8080";
 var xhr = new XMLHttpRequest();
 
@@ -62,8 +59,6 @@ function sendAlea (alea, TabId) {
 				console.log("cancel Ask");
 				chrome.tabs.sendMessage(TabId, {dom: "cancelAsk"}, function(response) {
 				});
-			// else if(xhr.status === 0){
-			// alert("erreur de connection au serveur reesayez plus tard");
 			}else {
 				alert("error : " +xhr.status+" veuillez recharger la page");
 			}
