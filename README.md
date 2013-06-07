@@ -11,4 +11,4 @@ II extension chrome
 L'extension chrome va permettre de renseigner les identifiants quand ils seront demander, pour cela l'extension va générer un QR Code que l'application mobile devra scanner puis elle enverra les identifiants correspondants à l'extension pour qu'elle puisse les rentrés dans les champs souhaité.
 
 II.1 Menus de l’extension
-Ces options sont :-	L’affichage du QR Code avec redimensionnement, possibilité de désactiver l’affichage automatique de la popup, ainsi qu’un bouton d’aide ouvrant un nouvel onglet avec une page web contenant l’aide plus les infos de licence etc. 
+Ces options sont :-	L’affichage du QR Code avec redimensionnement, possibilité de désactiver l’affichage automatique de la popup, ainsi qu’un bouton d’aide ouvrant un nouvel onglet avec une page web contenant l’aide plus les infos de licence etc. ![extension menu](/img/menuExtension.png "extension menu")
