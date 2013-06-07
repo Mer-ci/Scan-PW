@@ -15,11 +15,15 @@ L'extension chrome va permettre de renseigner les identifiants quand ils seront 
 
 	II.2 Reconnaissance de la nécessité d’identifiants et génération de QRCode
 
-L'extension parcoure chaque page et vérifie si elle nécessite des identifiants, si c'est le ças on générer un QRCode. La partie détection se trouve dans le content script pour avoir accès à la page web visitée. La détection automatique peut être désactivée, si on la désactive on peut toujours afficher le QR Code en passant par le popup de l'extension. A noter que si les champs ne sont pas automatiquement détecter les identifiants peuvent être insérés grâce à un menu contextuel. Le QRCode peut être redimensionner pour faciliter le scan du QRCode, il contient : l'url de la page et la clef publique.	II.3 Fonctionnement interne 
+L'extension parcoure chaque page et vérifie si elle nécessite des identifiants, si c'est le ças on générer un QRCode. La partie détection se trouve dans le content script pour avoir accès à la page web visitée. La détection automatique peut être désactivée, si on la désactive on peut toujours afficher le QR Code en passant par le popup de l'extension. A noter que si les champs ne sont pas automatiquement détecter les identifiants peuvent être insérés grâce à un menu contextuel. Le QRCode peut être redimensionner pour faciliter le scan du QRCode, il contient : l'url de la page et la clef publique.	II.3 Fonctionnement interne 
+
 L’extension est divisée en plusieurs fichiers en fonction des fonctionnalités de l’extension chrome. Les différents  fichiers ainsi que leurs fonctionnalités sont les suivants : -	popup.js : ce fichier JavaScript lié a une page « popup.html », mais la vue est générer par qrview.js. Ce pop-up permet d’afficher le QR Code si il ne s’affiche pas automatiquement.-	qrview.js : permet de gérer l’affichage principale de l’extension ainsi que les interactions de l’utilisateur dessus, l’accès à l’aide et le paramétrage de plusieurs options comme le choix de la taille du QR Code, activer/désactiver l’affichage auto du QR.-	background.js : fichier JavaScript lié a une page « background.html » pour la déclaration des fichiers externes. Ce fichier va permettre la communication entre les différents modules de l’extension et il va aussi faire les tâches de fond comme faire les appelles serveurs. Il est donc composé de listener, ainsi que l’implémentation des fonctions permettant de créer les menus contextuels.-	content.js : fichier js qui sera exécuter au sein de la page charger dans le navigateur. Ce fichier aura pour fonction de détecter les champs de login, et d’insérer les login dans ces champs. Si la détection automatique est activé il va aussi afficher la vue principale (générer par qrview.js) directement dans la page du site visité-	communication.js : fichier JavaScript qui aura pour but de communiquer avec le serveur.-	crypto.js : fichier JavaScript qui s’occupera de la cryptographie : génération clé publique/privé, chiffrement/déchiffrement des données.-	QRcode.js : fichier JavaScript qui va faire la génération du QR Code.
+
  ![extension operations](/img/extensionOperations.png "extension operations")
 
+
 	III serveur
+
 
 Le serveur est un intermédiaire entre l'extension et le mobile, car ils ne communiquent pas directement entre eux (une communication direct peut-être implémenter plus tard). Le serveur est fait en Node.js et utilise une base de donnée postgres.
 
@@ -41,22 +45,25 @@ Lancer le serveur grâce au script start (voir utilisation des scripts)
 
 	IV.1 PC - mobile
 
-La communication entre le pc et le mobile se fait par QR Code, les informations passées seront (voir  trame au 10.1.1) :-	Clé publique -	URL 	IV.2 Mobile - serveur
+La communication entre le pc et le mobile se fait par QR Code, les informations passées seront (voir  trame au 10.1.1) :-	Clé publique -	URL	IV.2 Mobile - serveur
 
-	La communication entre le mobile et le serveur sera fait par une connexion sécurisée en HTTP. Le mobile enverra les informations suivantes sous format JSON :-	Clé publique (de la partie extension)-	Données de login et URL encryptés grâce à la clé publique de la partie extensionLe mobile pourra aussi arrêter une transaction en envoyant une trame de type : « type=c » au serveur.
+La communication entre le mobile et le serveur sera fait par une connexion sécurisée en HTTP. Le mobile enverra les informations suivantes sous format JSON :-	Clé publique (de la partie extension)-	Données de login et URL encryptés grâce à la clé publique de la partie extensionLe mobile pourra aussi arrêter une transaction en envoyant une trame de type : « type=c » au serveur.
 
 	IV.3 PC - serveur
 La communication se fera en utilisant HTTP de la façon suivante : les données seront envoyées dans un format JSONA partir du moment qu’un QR Code a été généré, l’extension va envoyer une requête sur le serveur contenant la clé publique -> à la réception de la requête on vérifie si la clé publique a une correspondance le serveur répond à l’extension en envoyant un aléa encrypté avec la clé publique de l’extension -> l’extension décrypte l’aléa avec sa clé privée et l’envoi en clair au serveur -> le serveur vérifie si l’aléa est identique si oui il envoi la donnée au PC *-> le PC répond en envoyant un ACK au serveur -> à la réception de l’ACK le serveur efface la donnée de sa DB.•	A ce niveau là il y a une attente des informations envoyées par le mobile. Cette attente est réalisée de la façon suivante : le serveur va attendre 1min en faisant un check tout les seconde pour voir si les données sont en DB -> si elles y sont on envoi les données, si au bout d’1min on a toujours pas les données on envoi une réponse « waitLogin » a l’extension, au bout de 5 tentatives on fait un cancel et on envoi une réponse « cancel » a l’extension. 	IV.4 Codes d'actions
 
 Ces codes vont permettre la communication avec le serveur :-	Action = mdp : indique au serveur que l’extension fait une demande de mot de passe o	Réponse positive : code 200 -> alea chiffré (JSON)o	Réponse négative : Erreur 520 (voir partie Codes d’erreur)-	Action = sAlea : indique au serveur que l’extension envoi l’aléa déchiffré o	Réponse positive : code 200 -> envoi des identifiant + urlo	Réponse négative : code 520, 521, 522, 523 (voir partie Codes d’erreur)-	Action = r : indique au serveur que le mobile envoi les identifiantso	Réponse positive : code 200 -> « success »o	Réponse négative : Erreur 520 (voir partie Codes d’erreur)-	Action = c : indique au serveur une commande cancelo	Réponse positive : code 200 -> « success »o	Réponse négative : Erreur 520 (voir partie Codes d’erreur)	IV.5 Codes d'erreur
 
-Codes d’erreur générer par le serveur :-	Erreur 520 : problème avec la base de donnée -> retourne l’erreur générer par le module postgres.-	Erreur 521 : demande d’un renvoi -> retourne « waitLogin »-	Erreur 522 : temps d’attente des identifiants trop long -> retourne « cancel »-	Erreur 523 : identifiant demander à reçut un cancel.	V Trames
+Codes d’erreur générer par le serveur :-	Erreur 520 : problème avec la base de donnée -> retourne l’erreur générer par le module postgres.-	Erreur 521 : demande d’un renvoi -> retourne « waitLogin »-	Erreur 522 : temps d’attente des identifiants trop long -> retourne « cancel »-	Erreur 523 : identifiant demander à reçut un cancel.	V Trames
+
 	
 	V.1 Entre l'extension et le mobile
+
 
 Ici les informations sont envoyées par QR Code, nous avons donc choisi d’avoir une trame sous forme d’URL, pour rester cohérent avec la technologie QR Code, contenant l’url que l’on tronque en enlevant les paramètres originaux, la clé publique sur 1024 bits et un code « d’action » qui sera « r ». Exemple : http://r.mer.ci?r&CCCFvggbzzscvrted542c45fv56CCCFvggbzzscvrted542c45fv56CCCFvggbzzscvrted542c45fv56CCCFvggbzzscvrted542c45fv56CCCFvggbzzscvrted542c45fv56CCCFvggbzzscvrted542c45fv56CCCFvggbzzscvrted542c45fv56CCCFvggbzzscvrted542c45fv5&www.amazon.fr	V.2 Entre l'extension et le serveur
 
 Les informations sont envoyées en JSON, les trames auront donc la forme suivantes (nous nous plaçons du coter extension): -	envoi clé publique{	clé publique : « cle »}-	Réception aléa crypté{	aléa : « aléa »}-	Envoi aléa décrypté{	aléa : « aléa »}-	réception des données{	url : «  www.monUrl.com « ,	userLogin : « user » ,	userMdp : « mdp »}-	Envoi ACK{ack : « ack »}	V.3 Entre l'extension et le mobile
+
 
 Les informations sont envoyées en JSON, les trames auront donc la forme suivantes (nous nous plaçons du coter mobile): -	envoi des logins{	type : ‘r’,	key : ‘the key’,	url : ‘www.mon-url.com’,	login : ‘mon login’,	pwd : ‘mon pwd’}-	envoi commande cancel{	type : ‘c’,	key : ‘my key’}
 	
