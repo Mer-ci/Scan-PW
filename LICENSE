@@ -1,5 +1,6 @@
 Extension and server are under GPL v2 license
 
+<<<<<<< HEAD
 GNU GENERAL PUBLIC LICENSE
            Version 2, June 1991
 
@@ -279,6 +280,8 @@ YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
 PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
+=======
+>>>>>>> f3bc347e61911b1350dbb3274f53a8ccf838842c
 Files under extension/bootstrap
 
                                 Apache License
@@ -498,6 +501,7 @@ Address all questions regarding this license to:
   Tom Wu
   tjw@cs.Stanford.EDU
 
+<<<<<<< HEAD
 file under jquery-qrcode-master
 
 Copyright (c) 2011 Jerome Etienne, http://jetienne.com
@@ -539,3 +543,6 @@ file under qrcode
 //	http://www.denso-wave.com/qrcode/faqpatent-e.html
 //
 //---------------------------------------------------------------------
+=======
+file under 
+>>>>>>> f3bc347e61911b1350dbb3274f53a8ccf838842c
