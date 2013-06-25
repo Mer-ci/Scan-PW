@@ -1,5 +1,7 @@
 #SCAN PW
 
+(voir wiki)
+
 Scan pw a pour but de centraliser tous vos mots de passe sur votre mobile, cela permet de ne pas avoir à retenir les nombreux mots de passe que l'on utilise tous les jours (carte bleue, sites internet, boite mail …). La force de scan pw est d'utiliser des technologies novatrices permettant de retrouver rapidement vos mots de passe et de renseigner automatiquement les champs de logins sur tous vos sites. Scan pw est composé de trois parties: une application mobile (android), un serveur et une extension chrome.
 
 	I application mobile
